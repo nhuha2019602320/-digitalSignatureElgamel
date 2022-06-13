@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    
+</head>
+<div class="container">
+    <h1>CHỮ KÝ SỐ - ELGAMAL</h1>
+    <div class="containerKey">
+        <div class="createKey">
+            <div class="showAllOfKey">
+                <h1>TẠO KHÓA</h1>
+                <div class="publicKey">
+                    <h4 class="titlePubKey">Khóa công khai (p, a, d)</h4>
+                    <div class="valuePubKey">
+                        <p>Số nguyên tố p = <input type="text" id="inpRandomP"></p>
+                        <p>Số (alpha) a = <input id="inpRandomA" type="text"></p>
+                        <p>(d = a^x mod p) Số d =<input type="text" id="inpResultD"></p>
+                    </div>
+                </div>
+                <div class="privateKey">
+                    <h4 class="titlePriKey">Khóa bảo mật (x)</h4>
+                    <div class="valuePriKey">
+                        <p>Số nguyên x = <input type="text" id="inpRandomX"></p>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="btnCreateKey">
+                <button class="randomKey" onClick="randomKey()">Tạo khóa ngẫu nhiên</button>
+            </div>
+        </div>
+
+    <div class="singDocuments">
+        <h1>THỰC HIỆN KÍ</h1>
+        <div class="signContainer">
+            <div class="caculator">
+                <ul>
+                    <li><p>Số ngẫu nhiên k = <input type="text" id="inpResultK"></p></li>
+                    <li><p>Y = (a^k mod p) Y = <input type="text" id="inpResultY"></p></li>
+                    <li><button onClick="resetValue()" class="btnRelect">Chọn lại</button></li>
+                </ul>
+            </div>
+            <div class="selectFile">
+                <ul>
+                    <h3>Chọn file được ký:</h3>
+                    <li><input type="text"></li>
+                    <li><input type="file" id="upload"></li>
+                    <li><button class="btnSign" onClick="registerDocument()" id="btn_Sign">Kí lên văn bản</button></li>
+                </ul>
+            </div>
+            <div class="resultOfSign">
+                <ul>
+                    <h3>Tệp chứ ký vào file văn bải dược gửi đi</h3>
+                    <li><textarea type="text" class="inpResult" name="" id="outPut"></textarea></li>
+                </ul>
+            </div>
+            <div class="selectFile">
+                <ul>
+                    <h3>Chọn file thực hiện kiểm tra chữ ký số</h3>
+                    <li><input type="text"></li>
+                    <li><input type="file" id="inpFile"></li>
+                    <li><button onClick="checkRegisterDocument()" class="btnSign">Kiểm tra chữ ký</button></li>
+                </ul>
+            </div>
+        </div>  
+    </div>  
+  </div>
+</div>
+
+<script src="index.js"></script>
+<script src="a.js"></script>
+</body>
+
+</html>
