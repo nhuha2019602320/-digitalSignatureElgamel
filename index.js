@@ -9,15 +9,21 @@ upload.addEventListener('change', () => {
         outPut.value = fileRegister.result.toString();
     }
 }) 
-
-inpFile.addEventListener('change', () =>{
-    let fileCheck = new FileReader();
-    fileCheck.readAsText(inpFile.files[0]);
-    fileCheck.onload = () => {
-        outPut.value = fileCheck.result.toString();
+inpFile.addEventListener('change', () => {
+    let fileRegister = new FileReader();
+    fileRegister.readAsText(inpFile.files[0]);
+    fileRegister.onload = () => {
+        outPut.value = fileRegister.result.toString();
     }
-})
+}) 
 
+function utf8ToBase64(str){
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+function base64ToUtf8(str){
+    return decodeURIComponent(escape(window.atob(str)));
+}
 function binaryNum(a) {
     var arr = [];
     while(a>0) {
@@ -40,59 +46,65 @@ function calculaeSquareAndMutil(alpha, x, p) {
         }
         return result;
 }
-//conver string to number
-function convertUni(arrInput){
-    arrUni = [];
-    for(var index = 0; index < arrInput.length; index++)
-        arrUni.push(arrInput.charCodeAt(index));
-    return arrUni;
+
+function Inverse(a,b){
+    var q,r,y,y0,y1;
+    y0=0, y1=1,d = b;
+    while(a>0){
+        q = Math.floor(b/a);
+        r = b%a;
+        if( r == 0)
+            break;
+        y = y0-q*y1;
+        b=a;
+        a=r;
+        y0=y1;
+        y1=y;
+    }
+    return y;
 }
-//convert number to string
-function convertString(arrOut){
-    arrString = [];
-    for(var index = 0; index < arrOut.length; index++)
-        arrString.push(String.fromCharCode(arrOut[index]));
-    return arrString;
+
+function download(file, text) {
+    var element = document.createElement("a");
+    element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    );
+    element.setAttribute("download", file);
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element)
 }
+
 function registerDocument() {
-    var P = document.getElementById('inpRandomP').value;
-    var alpha = document.getElementById('inpRandomA').value;
-    var X = document.getElementById('inpRandomX').value;
-    var valueOfInput = document.getElementById('outPut').value;
-    var K = document.getElementById('inpResultK').value;
-    var beta = calculaeSquareAndMutil(alpha,X,P);
-    arrBanRoUni = convertUni(valueOfInput);
-    arrBanMa = []
-    var c1, c2,k;
-    for(var index = 0 ; index < arrBanRoUni.length; index ++){;
-        c1 = calculaeSquareAndMutil(alpha, K, P);
-        c2 = (arrBanRoUni[index] * calculaeSquareAndMutil(beta,K,P)) %P;
-        arrBanMa.push(c1,c2);
-    }
-    //ban ma
-    var banMa = [];
-    banMa = convertString(arrBanMa).join('');
-    console.log(banMa)
-    outPut.value = arrBanMa.join('');
-    alert("REGISTER SUCCESS !")
-    return banMa;
+    var valueRegister = document.getElementById('outPut').value
+    var P = document.getElementById('inpRandomP').value
+    var Y = document.getElementById('inpResultY').value;
+    var K = parseInt(document.getElementById('inpResultK').value);
+    var beta = parseInt(document.getElementById('inpResultD').value)
+    var inpRandomA = parseInt(document.getElementById('inpRandomA').value);
+    var m = getRadomA(0, P-1);;
+    var S1 = calculaeSquareAndMutil(inpRandomA, K, P)
+    var K_ND = Inverse(K, P-1);
+    var S2 = (K_ND*(m-inpRandomA*S1)) % 18;
+    var arr = []
+    console.log(outPut.value);
+    arr.push(outPut.value, S1, S2);
+    localStorage.setItem('key', JSON.stringify(arr));
+        alert("Signing Successfull Document !") 
+    download("key.txt", arr.toString())
+    
 }
+      
 function checkRegisterDocument(){
-    var P = document.getElementById("inpRandomP").value;
-    var alpha = document.getElementById("inpRandomA").value;
-    var c = document.getElementById("outPut").value;
-    var arrBanMas = convertUni(c);
-    var ArrgiaiMa = [];
-    for(var i = 0; i < arrBanMas.length; ){
-        //---------- dinh li nho fermat-------------------
-        var k =calculaeSquareAndMutil(arrBanMas[i],alpha,P);// k nho hon p
-        var m = (calculaeSquareAndMutil(k,P-2,P)* (arrBanMas[i+1])%P )%P;
-        
-        ArrgiaiMa.push(m);
-        i+=2;
-        console.log(ArrgiaiMa)
-    }
-    alert("CHECK SUCCESS!");
+    var checkKey = JSON.parse(localStorage.getItem('key'));
+    console.log((outPut.value));
+    console.log((checkKey.toString()))
+    if(checkKey.toString() === outPut.value)
+        alert("Document hasn't been changed")
+    else  
+        alert(" The documnet is invalid or has been changed");
+    // window.localStorage.removeItem('key')
 }
 //function check primeNumber
 function checkPrimeNumber(primeNumber) {
@@ -121,7 +133,7 @@ function getRadomA(min, max) {
 //function calculaeModulo
 
 
-console.log(calculaeSquareAndMutil(65,31,178))    
+console.log(calculaeSquareAndMutil(15, 3, 911))    
 function randomKey() {
     //random value of Prime number P 
     var inpRandpmP = document.getElementById('inpRandomP');
@@ -134,7 +146,7 @@ function randomKey() {
     const arr = [];
     const randomP = Math.floor(Math.random() * 1000) + 2;
 
-    for (let i = 2; i < 9000; i++)
+    for (let i = 2; i < 1000; i++)
         if (checkPrimeNumber(i) == 1)
             arr.push(i)
     var valueP = arr[(Math.random() * arr.length) | 0];
@@ -165,4 +177,5 @@ function resetValue(){
     document.getElementById('inpResultD').value = "";
     document.getElementById('inpResultK').value = "";
     document.getElementById('inpResultY').value = "";
+    window.location.reload();
 }

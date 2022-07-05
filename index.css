@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Rokkitt:wght@100&display=swap');
 body{
-    background-color: rgb(216, 226, 231);
+    background-color: rgba(247, 246, 242, 0.856);
     font-family: 'Roboto Slab', serif;
     font-family: 'Rokkitt', serif;
+    box-sizing: calc(100% - 2px rgb(250, 233, 0) rgb(68, 68, 133));
 }
 input:hover {
-    background-color: rgb(148, 204, 204);
+    background-color: rgb(209, 205, 223);
     outline: none;
     transition: 0.5s;
+    cursor: pointer;
+    transform: scale(1.1)
 }
 
 button {
@@ -19,7 +22,8 @@ button {
     border-radius:5px ;
 }
 button:hover {
-    background-color: aquamarine;
+    background-color: rgb(210, 221, 217);
+    transform: scale(1.1);
 }
 .container {
     width: 1200px;
